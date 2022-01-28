@@ -154,7 +154,7 @@ if __name__ == "__main__":
 ## References
 - [1] Tjeng et al., Evaluating Robustness of Neural Networks with Mixed Integer Programming, *International Conference on Learning Representations*, 2018
 - [2] Dutta et al., Output Range Analysis for Deep Neural Networks, *NASA Formal Methods Symposium*, 2018
-- [3] Lomuscio et al., An Approach to Reachability Analysis for Feed Forward ReLU Neural Networks, *https://ui.adsabs.harvard.edu/*, 2017
+- [3] Lomuscio et al., An Approach to Reachability Analysis for Feed Forward ReLU Neural Networks, *adsabs.harvard*, 2017
 - [4] Ehlers et al., Formal Verification of Piece-Wise Linear Feed-Forward Neural Networks, *Automated Technology for Verification and Analysis*, 2017
 - [5] Katz et al., Reluplex: An Efficient SMT Solver for Verifying Deep Neural Networks, *Computer Aided Verification*, 2017
 - [6] Wang et al., Formal Security Analysis of Neural Networks Using Symbolic Intervals, *USENIX Security Symposium*, 2018
