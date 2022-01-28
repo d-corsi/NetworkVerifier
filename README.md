@@ -6,7 +6,7 @@ A set of algorithms for the formal verification and analysis of Neural Networks,
 
 ## Available Algorithms
 - [ ] MILP [1]
-- [ ] SAT [2, 3, 4] *(NB: the implementation is the basic version, the cited work report different optimizations)*
+- [ ] SAT [2, 3, 4] *(NB: )*
 - [ ] Reluplex [5]
 - [ ] Reluval [6]
 - [ ] Marabou [7]
@@ -14,7 +14,7 @@ A set of algorithms for the formal verification and analysis of Neural Networks,
 - [ ] α,β-CROWN [9]
 - [x] Complete ProVe [10]
 
-*NB: given the limitations of the algorithms, [1, 2, 3, 4, 5, 7] are compatible only with piecewise activation functions (e.g., linear, ReLU) while [6, 8, 9, 10] are compatible with monotonically increasing function (e.g., linear, ReLU, tanh, sigmoid)*
+*NB: given the limitations of the algorithms, [1, 2, 3, 4, 5, 7] are compatible only with piecewise activation functions (e.g., linear, ReLU) while [6, 8, 9, 10] are compatible with monotonically increasing function (e.g., linear, ReLU, tanh, sigmoid)*. For [2, 3, 4] the implementation in this repo report only the basic version, please look at the original paper for all the optimizations.
 
 ## Installation
 
