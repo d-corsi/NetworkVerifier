@@ -76,14 +76,16 @@ return tf.keras.Model(inputs, outputs)
 
 ## Available algorithm keys:
 ```
-algorithm_key = "prove" # for ProVe [8]
-algorithm_key = "complete_prove" # for Complete ProVe [10]
+
 ```
 
 
 ## Run the Algorithm
 To use our algorithms use the class **NetVer** from the python file *netver/main.py*. 
 ```
+algorithm_key = "prove" # for ProVe [8]
+# or "complete_prove" for Complete ProVe [10], ...
+
 from netver.main import NetVer
 netver = NetVer( algorithm_key, model, property )
 sat, info = netver.run_verifier( verbose=1 )
@@ -109,7 +111,7 @@ semi_formal = False #enable the semi-formal verification
 
 
 ## Results of the analysis
-The analysis returns two values SAT and info. *SAT* is true if the property is respected, false otherwise; *value* is a dictionary that contains different values, based on the algorithm, following:
+The analysis returns two values SAT and info. *SAT* is true if the property is respected, false otherwise; *value* is a dictionary that contains different values, based on the used algorithm:
 
 - counter_example: a counter example that falsify the property 
 - violation_rate: the violation rate of the property *(only for Complete Prove - complete_prove)*
@@ -142,11 +144,11 @@ if __name__ == "__main__":
 		"A" : 1
 	}
 
-	netver = NetVer( "prove", model, property )
+	netver = NetVer( "complete_prove", model, property, semi_formal=True )
 
 	sat, info = netver.run_verifier( verbose=1 )
-	print( f"\nAlgorithm returns SAT: {sat}" )
-	print( f"\tinfo example: {info}\n" )
+	print( f"\nThe property is SAT? {sat}" )
+	print( f"\tviolation rate: {info['violation_rate']}\n" )
 ```
 
 
