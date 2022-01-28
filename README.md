@@ -36,7 +36,7 @@ property = {
 	"P" : [[0.1, 0.34531], [0.7, 1.1]],
 	"Q" : [[0.0, 0.2], [0.0, 0.2]]
 }
-
+```
 
 ### Decision
 Following the definition of ProVe [Corsi et al.], given an input property P and an output node A corresponding to an action, the property is verified if for each *x* in P it follows that the action A will never be selected *(i.e., if the input belongs to the interval P, the output of node A is never the one with the highest value)*.
