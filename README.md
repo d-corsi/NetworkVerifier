@@ -6,7 +6,7 @@ A set of algorithms for the formal verification and analysis of Neural Networks,
 
 ## Available Algorithms
 - [ ] MILP [1]
-- [ ] SAT [2, 3, 4] *(NB: )*
+- [ ] SAT [2, 3, 4] 
 - [ ] Reluplex [5]
 - [ ] Reluval [6]
 - [ ] Marabou [7]
