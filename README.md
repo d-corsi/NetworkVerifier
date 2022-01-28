@@ -74,12 +74,6 @@ return tf.keras.Model(inputs, outputs)
 ```
 
 
-## Available algorithm keys:
-```
-
-```
-
-
 ## Run the Algorithm
 To use our algorithms use the class **NetVer** from the python file *netver/main.py*. 
 ```
@@ -90,6 +84,7 @@ from netver.main import NetVer
 netver = NetVer( algorithm_key, model, property )
 sat, info = netver.run_verifier( verbose=1 )
 ```
+
 
 ## Prameters
 NetVer will use the default parameters for the formal analysis. You can change all the parameter when create the NetVer object as follow: 
