@@ -86,7 +86,7 @@ netver = NetVer( algorithm_key, model, property )
 sat, info = netver.run_verifier( verbose=1 )
 ```
 
-Following a lisT of all the algorithms' keyword *(algorithm_key = )*:
+Following a list of all the algorithms' keyword *(algorithm_key)*:
 ```
 MILP #[1]
 linear #[2, 3, 4]
