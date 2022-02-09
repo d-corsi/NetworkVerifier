@@ -5,8 +5,8 @@ This is a **work in progress repo**, there may be bugs in the code and numerous 
 A set of algorithms for the formal verification and analysis of Neural Networks, implemented in Python for TensorFlow 2. This repo replace the original repo of ProVe (UAI'21), you can find the original repo [here!](https://github.com/d-corsi/ProVe)
 
 ## Available Algorithms
-- [ ] MILP [1]
-- [ ] SAT [2, 3, 4] 
+- [x] MILP [1]
+- [x] Linear Programming Based [2, 3, 4] 
 - [ ] Reluplex [5]
 - [ ] Reluval [6]
 - [ ] Marabou [7]
@@ -14,7 +14,7 @@ A set of algorithms for the formal verification and analysis of Neural Networks,
 - [ ] α,β-CROWN [9]
 - [x] Complete ProVe [10]
 
-*NB: given the limitations of the algorithms, [1, 2, 3, 4, 5, 7] are compatible only with piecewise activation functions (e.g., linear, ReLU) while [6, 8, 9, 10] are compatible with monotonically increasing function (e.g., linear, ReLU, tanh, sigmoid)*. For [2, 3, 4] the implementation in this repo report only the basic version, please look at the original paper for all the optimizations.
+*NB: given the limitations of the original algorithms, [1, 2, 3, 4, 5, 7] are compatible only with piecewise activation functions (e.g., linear, ReLU) while [6, 8, 9, 10] work with all monotonically increasing function (e.g., linear, ReLU, tanh, sigmoid). For [2, 3, 4] we only implement the basic version of the algorithm, please look at the original paper for all the optimizations.*
 
 ## Installation
 
@@ -59,9 +59,11 @@ property = {
 
 
 ## Compatible Network Models
-- [x] Tensorflow 2
-- [ ] Tensorflow 2 (sequential) 
+- [x] Tensorflow 2 *(tf.keras.Model)*
+- [ ] Tensorflow 2 *(tf.keras.Sequential)*
 - [ ] PyTorch 
+- [ ] NNet *(only fully connected ReLU networks)*
+- [ ] ONNX  
 
 *example of compatible TF2 model...*
 ```
@@ -78,11 +80,18 @@ return tf.keras.Model(inputs, outputs)
 To use our algorithms use the class **NetVer** from the python file *netver/main.py*. 
 ```
 algorithm_key = "prove" # for ProVe [8]
-# or "complete_prove" for Complete ProVe [10], ...
 
 from netver.main import NetVer
 netver = NetVer( algorithm_key, model, property )
 sat, info = netver.run_verifier( verbose=1 )
+```
+
+Following a lisT of all the algorithms' keyword *(algorithm_key = )*:
+```
+MILP #[1]
+linear #[2, 3, 4]
+prove #[8]
+complete_prove #[10]
 ```
 
 
