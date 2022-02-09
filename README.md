@@ -95,7 +95,7 @@ complete_prove #[10]
 ```
 
 
-## Prameters
+## Parameters
 NetVer will use the default parameters for the formal analysis. You can change all the parameter when create the NetVer object as follow: 
 ```
 from netver.main import NetVer
