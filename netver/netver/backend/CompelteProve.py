@@ -1,5 +1,5 @@
 from netver.backend.ProVe import ProVe
-import numpy as np
+import numpy as np; import tensorflow as tf
 
 
 class CompleteProVe( ProVe ):
@@ -15,14 +15,15 @@ class CompleteProVe( ProVe ):
 
 	Attributes
 	----------
-		P : dict
-			a dictionary that describe the property to analyze (overview of the structure here https://github.com/d-corsi/NetworkVerifier)
+		P : list
+			input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
+			2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
 		network : tf.keras.Model
 			tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
 		dual_network: tf.keras.Model
-			the dual netowrk built to deny the properties, is the negation of the main netowrk, a property is violated when "at least
+			the dual netowrk is built to deny the properties, is the negation of the main netowrk, a property is violated when "at least
 			ONE output of the dual netowrk is greater than zero. It also works in "reverse" mode, a property is violated when 
-			"ALL the outputs of the dual netowrk is greater than zero"
+			"ALL the outputs of the dual netowrk are greater than zero"
 		super: super()
 			this class is inherited from netver.backend.ProVe, all the paramters of the parent class are inherited in this class
 
@@ -41,10 +42,9 @@ class CompleteProVe( ProVe ):
         ----------
 			network : tf.keras.Model
 				tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
-            P : dict
-				a dictionary that describe the property to analyze (overview of the structure here https://github.com/d-corsi/NetworkVerifier)
-			dual_network: tf.keras.Model
-				the dual netowrk built to deny the properties, is the negation of the main netowrk
+            P : list
+				input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
+				2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
         """
 
 		super().__init__(network, P, **kwargs)
@@ -69,7 +69,7 @@ class CompleteProVe( ProVe ):
 			info : dict
 				a dictionary that contains different information on the process, the 
 				key 'counter_example' returns the input configuration that cause a violation
-				key 'exit_reason' returns the termination reason (timeout or completed)
+				key 'exit_code' returns the termination reason (timeout or completed)
 				key 'violation_rate' returns the value of the vilation rate as a percentage of the input domain
         """
 
@@ -122,7 +122,7 @@ class CompleteProVe( ProVe ):
 		# Check if the exit reason is the time out on the cycle
 		if cycle >= self.time_out_cycle:
 			# return UNSAT with the no counter example, specifying the exit reason
-			return False, { "counter_example" : None, "exit_reason" : "cycle_timeout" }
+			return False, { "counter_example" : None, "exit_code" : "cycle_timeout" }
 
 		# Compute the violation rate, multipling the depth for the number for each violation
 		# and normalizing for the number of theoretical leaf

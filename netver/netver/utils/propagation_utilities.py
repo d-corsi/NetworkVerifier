@@ -152,6 +152,10 @@ def multi_area_propagation_gpu(input_domain, net_model, thread_number=32):
 			the propagated bound in the same format of the input domain (3-dim)
 	"""
 
+	# Ignore the standard warning from CuPy
+	import warnings
+	warnings.filterwarnings("ignore")
+
 	# Import the necessary library for the parallelization (Cupy) and also the c++ CUDA code.
 	import cupy as cp
 	from netver.utils.cuda_code import cuda_code

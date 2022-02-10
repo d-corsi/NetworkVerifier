@@ -15,12 +15,16 @@ class LinearSolver:
 
 	Attributes
 	----------
-		P : dict
-			a dictionary that describe the property to analyze (overview of the structure here https://github.com/d-corsi/NetworkVerifier)
+		P : list
+			input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
+			2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
 		network : tf.keras.Model
 			tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
 		solver: z3.Solver
 			the z3 low level solver for the SMT problem
+		reversed: bool
+			this variables represent that the verification query is reversed, it means that "at least ONE output must be greater than 0" instead of the common
+			form where "ALL inputs must be greater than zero".
 		*_variables: list
 			list of the variables for the solver, two for each node, pre and post activation
 
@@ -29,6 +33,10 @@ class LinearSolver:
 		verify( verbose )
 			method that formally verify the property P on the ginve network
 	"""
+
+
+	# Verification hyper-parameters
+	reversed = False
 
 
 	def __init__( self, network, P, **kwargs ):
@@ -40,8 +48,11 @@ class LinearSolver:
         ----------
 			network : tf.keras.Model
 				tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
-            P : dict
-				a dictionary that describe the property to analyze (overview of the structure here https://github.com/d-corsi/NetworkVerifier)
+            P : list
+				input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
+				2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
+			kwargs : **kwargs
+				dicitoanry to overide all the non-necessary paramters (if not specified the algorithm will use the default values)	
         """
 
 		# Input parameters
@@ -90,7 +101,12 @@ class LinearSolver:
 		# Add constraints on input/output
 		self.solver.add( [self.input_variables[i] >= l for i, l in enumerate(self.P[:, 0])] )
 		self.solver.add( [self.input_variables[i] <= u for i, u in enumerate(self.P[:, 1])] )
-		self.solver.add( z3.Or([output_var < 0 for output_var in self.output_variables_activated]) )
+
+		# positive -> (SAT if each output have a value >= 0)
+		# reverse positive -> (SAT if at least one output have value > 0)
+		# Add constraints on the output nodes, looking to falsify the property 
+		if not self.reversed: self.solver.add( z3.Or([output_var < 0 for output_var in self.output_variables_activated]) )
+		else: self.solver.add( [output_var < 0 for output_var in self.output_variables_activated] )
 
 
 	def verify( self, verbose ):

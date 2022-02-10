@@ -14,8 +14,9 @@ class ProVe( ):
 
 	Attributes
 	----------
-		P : dict
-			a dictionary that describe the property to analyze (overview of the structure here https://github.com/d-corsi/NetworkVerifier)
+		P : list
+			input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
+			2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
 		network : tf.keras.Model
 			tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
 		unchecked_area: float
@@ -36,7 +37,7 @@ class ProVe( ):
 			rounding for the input domain real values, expressed as an integer that represent the number of decimals value, None
 			means that the rounding is the float precision of the system (default: None)
 		reversed: bool
-			this variables represent that the verification query is reversed, it means that "at least ONE input must be greater than 0" instead of the common
+			this variables represent that the verification query is reversed, it means that "at least ONE output must be greater than 0" instead of the common
 			form where "ALL inputs must be greater than zero".
 
 	Methods
@@ -44,6 +45,7 @@ class ProVe( ):
 		verify( verbose )
 			method that formally verify the property P on the ginve network
 	"""
+
 
 	# Verification hyper-parameters
 	cpu_only = False
@@ -64,8 +66,9 @@ class ProVe( ):
         ----------
 			network : tf.keras.Model
 				tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
-            P : dict
-				a dictionary that describe the property to analyze (overview of the structure here https://github.com/d-corsi/NetworkVerifier)
+            P : list
+				input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
+				2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
 			kwargs : **kwargs
 				dicitoanry to overide all the non-necessary paramters (if not specified the algorithm will use the default values)	
         """
@@ -108,7 +111,7 @@ class ProVe( ):
 			info : dict
 				a dictionary that contains different information on the process, the 
 				key 'counter_example' returns the input configuration that cause a violation
-				key 'exit_reason' returns the termination reason (timeout or completed)
+				key 'exit_code' returns the termination reason (timeout or completed)
         """
 
 		# Flatten the input domain to aobtain the areas matrix to simplify the splitting
@@ -130,7 +133,7 @@ class ProVe( ):
 			counter_example = self._test_counter_example( test_domain )
 
 			# If there is a counter example, return UNSAT with the example
-			if counter_example is not None: return False, { "counter_example": counter_example, "exit_reason" : "completed" }
+			if counter_example is not None: return False, { "counter_example": counter_example, "exit_code" : "completed" }
 
 			# Call the propagation method to obtain the output bound from the input area
 			test_bound = self._propagation_method( test_domain, self.network )
@@ -150,7 +153,7 @@ class ProVe( ):
 			# Exit check when the checked area is below the timout threshold
 			if self.unchecked_area < self.time_out_checked: 
 				# return UNSAT with the no counter example, specifying the exit reason
-				return False, { "counter_example" : None, "exit_reason" : "exploration_timeout" }
+				return False, { "counter_example" : None, "exit_code" : "exploration_timeout" }
 
 			# Split the inputs (Iterative Refinement)
 			areas_matrix = self._split( areas_matrix )
@@ -158,11 +161,11 @@ class ProVe( ):
 		# Check if the exit reason is the time out on the cycle
 		if cycle >= self.time_out_cycle:
 			# return UNSAT with the no counter example, specifying the exit reason
-			return False, { "counter_example" : None, "exit_reason" : "cycle_timeout" }
+			return False, { "counter_example" : None, "exit_code" : "cycle_timeout" }
 
 
 		# All the input are verified, return SAT with no counter example
-		return True, { "counter_example": None, "exit_reason" : "completed"}
+		return True, { "counter_example": None, "exit_code" : "completed"}
 
 	
 	def _verify_property( self, test_bound ):
