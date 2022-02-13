@@ -42,18 +42,18 @@ class LinearSolver:
 	def __init__( self, network, P, **kwargs ):
 
 		"""
-        Constructor of the class.
+		Constructor of the class.
 
-        Parameters
-        ----------
+		Parameters
+		----------
 			network : tf.keras.Model
 				tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
-            P : list
+			P : list
 				input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
 				2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
 			kwargs : **kwargs
 				dicitoanry to overide all the non-necessary paramters (if not specified the algorithm will use the default values)	
-        """
+		"""
 
 		# Input parameters
 		self.P = P
@@ -112,17 +112,17 @@ class LinearSolver:
 	def verify( self, verbose ):
 
 		"""
-        Method that perform the formal analysis.
+		Method that perform the formal analysis.
 		When the z3 solver returns SAT it means that a counterexample is found; ergo the global formal verification 
 		return UNSAT beacuse there is an input configuration that leads to a violation of the property P.
 		The method create all the possible combination of ReLU in the two possible lienar phase (2**relu_node) and then analyze them
 		as a standard linear program. If one of the leaf is SAT a counterexample is found, to prove that no coutnerexample exists it 
 		is necessary to analyze all the leaf.
 
-        Parameters
-        ----------
-            verbose : int
-                when verbose > 0 the software print some log informations
+		Parameters
+		----------
+			verbose : int
+				when verbose > 0 the software print some log informations
 
 		Returns:
 		--------
@@ -131,7 +131,7 @@ class LinearSolver:
 			info : dict
 				a dictionary that contains different information on the process, the 
 				key 'counter_example' returns the input configuration that cause a violation
-        """
+		"""
 
 		# Compute the number of leaf, this represents the maximum number of problem to analyze
 		leaf_number = 2 ** self.relu_variables
@@ -169,14 +169,14 @@ class LinearSolver:
 	def _verify_linear_configuration( self, configuration ):
 
 		"""
-        Method that solve a linear problem with the backend solver z3. To transform the non linear problem
+		Method that solve a linear problem with the backend solver z3. To transform the non linear problem
 		of the given network, this method set each hidden ReLU node to a fixed linear phase according to
 		the given configuration.
 
-        Parameters
-        ----------
-            configuration : str
-                a binary string with 0 if the phase of the corresponding node is inactive and 1 if active
+		Parameters
+		----------
+			configuration : str
+				a binary string with 0 if the phase of the corresponding node is inactive and 1 if active
 
 		Returns:
 		--------
@@ -184,7 +184,7 @@ class LinearSolver:
 				Return the result of the SAT analysis with z3. If the result is UNSAT no counterexample is found and the 
 				proeprty is respected, if the result is SAT it means that we have a counterexample so the proeprty is violated, 
 				in this last case even the global verification query stop
-        """
+		"""
 
 		# Create a new scope
 		self.solver.push()
@@ -238,19 +238,19 @@ class LinearSolver:
 	def _z3_real_to_float( self, variable ):
 
 		"""
-        Method that convert the z3 variable to a float, useful to obtain
+		Method that convert the z3 variable to a float, useful to obtain
 		the value before the return of the counterexample.
 
-        Parameters
-        ----------
-            variable : z3.var
-                the variable to convert in string
+		Parameters
+		----------
+			variable : z3.var
+				the variable to convert in string
 
 		Returns:
 		--------
 			val : float
 				the float that represent the z3 variales
-        """
+		"""
 
 		# Ask to the solver for the real value of interested variable
 		real = self.solver.model()[variable]
@@ -266,23 +266,23 @@ class LinearSolver:
 	def _linear_combination( self, input_nodes, params, biases ):
 		
 		"""
-        Method that encode the linear combination of each node (layer-wise) of the fully connected network
+		Method that encode the linear combination of each node (layer-wise) of the fully connected network
 		with the previous layer, applying the biases if necessary.
 
 		Parameters
-        ----------
-            input_nodes : list
-                node in input to the interested layer (previous layer)
+		----------
+			input_nodes : list
+				node in input to the interested layer (previous layer)
 			params : list
-                parameters of the network, the weights of the layer
+				parameters of the network, the weights of the layer
 			biases : list
-                list of the biases in the interested layer to add before the return
+				list of the biases in the interested layer to add before the return
 
 		Returns:
 		--------
 			output : list
 				a list with the linear combination formula for each node of the layer
-        """
+		"""
 		
 		# Loop to compute the linear combination
 		output = []    
@@ -299,19 +299,19 @@ class LinearSolver:
 	def _z3_to_string( self, variable ):
 
 		"""
-        Method that convert the z3 variable in a string, useful to obtain
+		Method that convert the z3 variable in a string, useful to obtain
 		arbitrary decimal precision.
 
-        Parameters
-        ----------
-            variable : z3.var
-                the variable to convert in string
+		Parameters
+		----------
+			variable : z3.var
+				the variable to convert in string
 
 		Returns:
 		--------
 			string : str
 				the string that represent the z3 variales with a rpecision of 20 decimals
-        """
+		"""
 		
 		#
 		return f"{variable:.20f}"
@@ -320,19 +320,19 @@ class LinearSolver:
 	def _is_relu( self, layer ):
 
 		"""
-        Method that return TRUE if the requested layer is ReLU, 
+		Method that return TRUE if the requested layer is ReLU, 
 		and FALSE if linear.
 
-        Parameters
-        ----------
-            layer : int
-                index of the interested layer
+		Parameters
+		----------
+			layer : int
+				index of the interested layer
 
 		Returns:
 		--------
 			is_relu : bool
 				true if the ReLu, false otherwise
-        """
+		"""
 
 		#
 		return self.network.layers[layer+1].activation == tf.keras.activations.relu

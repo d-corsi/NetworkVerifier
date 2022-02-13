@@ -60,18 +60,18 @@ class ProVe( ):
 	def __init__( self, network, P, **kwargs ):
 
 		"""
-        Constructor of the class.
+		Constructor of the class.
 
-        Parameters
-        ----------
+		Parameters
+		----------
 			network : tf.keras.Model
 				tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
-            P : list
+			P : list
 				input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
 				2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
 			kwargs : **kwargs
 				dicitoanry to overide all the non-necessary paramters (if not specified the algorithm will use the default values)	
-        """
+		"""
 
 		# Input parameters
 		self.network = network
@@ -95,14 +95,14 @@ class ProVe( ):
 	def verify( self, verbose ):
 
 		"""
-        Method that perform the formal analysis.
+		Method that perform the formal analysis.
 		When the solver explored and verify all the input domain the problem is SAT. At each iteration the tool searches for a 
 		counter example. If the algorithm find a counterexample it will be return inside within the UNSAT result.
 
-        Parameters
-        ----------
-            verbose : int
-                when verbose > 0 the software print some log informations
+		Parameters
+		----------
+			verbose : int
+				when verbose > 0 the software print some log informations
 
 		Returns:
 		--------
@@ -112,7 +112,7 @@ class ProVe( ):
 				a dictionary that contains different information on the process, the 
 				key 'counter_example' returns the input configuration that cause a violation
 				key 'exit_code' returns the termination reason (timeout or completed)
-        """
+		"""
 
 		# Flatten the input domain to aobtain the areas matrix to simplify the splitting
 		areas_matrix = np.array([self.P.flatten()])
@@ -171,12 +171,12 @@ class ProVe( ):
 	def _verify_property( self, test_bound ):
 		
 		"""
-        Method that verify the property on a list of the computed (or sampled in semi-formal mode) output bound.
+		Method that verify the property on a list of the computed (or sampled in semi-formal mode) output bound.
 
-        Parameters
-        ----------
-            test_bound : list
-                the output bound expressed as a 3-dim matrix. (a) a list of list for each splitted domain;
+		Parameters
+		----------
+			test_bound : list
+				the output bound expressed as a 3-dim matrix. (a) a list of list for each splitted domain;
 				(b) a list of bound for each input node and (c) a list of two element for the node, lower and upper
 
 		Returns:
@@ -186,7 +186,7 @@ class ProVe( ):
 				further investigations
 			proved_id : list
 				list of integer with the index of the bound that respect the give property
-        """
+		"""
 
 		# Check the property in standard and reverse mode, in the first case every bound must be greater than zero,
 		# in the latter at least one bound must be greater than zero. This function makes large use of the slicing 
@@ -205,19 +205,19 @@ class ProVe( ):
 	def _test_counter_example( self, test_domain ):
 
 		"""
-        Method that search for a counter example in the given domain with a sampling procedure
+		Method that search for a counter example in the given domain with a sampling procedure
 
-        Parameters
-        ----------
-            test_bound : list
-                the domain expressed as a 3-dim matrix. (a) a list of list for each splitted domain;
+		Parameters
+		----------
+			test_bound : list
+				the domain expressed as a 3-dim matrix. (a) a list of list for each splitted domain;
 				(b) a list of bound for each input node and (c) a list of two element for the node, lower and upper
 
 		Returns:
 		--------
 			counter_example : list
 				input configuration that lead to a violation of the property, None if no coutnerexample is found
-        """
+		"""
 
 		# Create a list of the input to test, selecting the middle point for the bound of each test domain
 		domains = [ [(node[0] + node[1])/2 for node in area] for area in test_domain ]

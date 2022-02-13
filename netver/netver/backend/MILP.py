@@ -37,18 +37,18 @@ class MILP:
 	def __init__( self, network, P, **kwargs ):
 
 		"""
-        Constructor of the class.
+		Constructor of the class.
 
-        Parameters
-        ----------
+		Parameters
+		----------
 			network : tf.keras.Model
 				tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
-            P : list
+			P : list
 				input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
 				2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
 			kwargs : **kwargs
 				dicitoanry to overide all the non-necessary paramters (if not specified the algorithm will use the default values)	
-        """
+		"""
 
 		# Input parameters
 		self.P = P
@@ -120,14 +120,14 @@ class MILP:
 	def verify( self, verbose ):
 
 		"""
-        Method that perform the formal analysis.
+		Method that perform the formal analysis.
 		When the z3 solver returns SAT it means that a counterexample is found; ergo the global formal verification 
 		return UNSAT beacuse there is an input configuration that leads to a violation of the property P.
 
-        Parameters
-        ----------
-            verbose : int
-                when verbose > 0 the software print some log informations
+		Parameters
+		----------
+			verbose : int
+				when verbose > 0 the software print some log informations
 
 		Returns:
 		--------
@@ -136,7 +136,7 @@ class MILP:
 			info : dict
 				a dictionary that contains different information on the process, the 
 				key 'counter_example' returns the input configuration that cause a violation
-        """
+		"""
 
 		# If necessary print some log informations
 		if verbose > 0: print( "MILP Verifier, launching the z3 verification tool..." )
@@ -156,10 +156,10 @@ class MILP:
 	def _parse_hidden_activation( self ):
 
 		"""
-        Method that perform the analysis of the variables corresponding to the hidden nodes. If a leyer is linear the constraints is only 
+		Method that perform the analysis of the variables corresponding to the hidden nodes. If a leyer is linear the constraints is only 
 		the equality between pre and post activation, if a layer is ReLU è add the integer trick for the MILP verification.
 
-        """
+		"""
 
 		milp_counter = 0
 		for j, varaible_layer in enumerate(self.hidden_variables):
@@ -181,23 +181,23 @@ class MILP:
 	def _linear_combination( self, input_nodes, params, biases ):
 		
 		"""
-        Method that encode the linear combination of each node (layer-wise) of the fully connected network
+		Method that encode the linear combination of each node (layer-wise) of the fully connected network
 		with the previous layer, applying the biases if necessary.
 
 		Parameters
-        ----------
-            input_nodes : list
-                node in input to the interested layer (previous layer)
+		----------
+			input_nodes : list
+				node in input to the interested layer (previous layer)
 			params : list
-                parameters of the network, the weights of the layer
+				parameters of the network, the weights of the layer
 			biases : list
-                list of the biases in the interested layer to add before the return
+				list of the biases in the interested layer to add before the return
 
 		Returns:
 		--------
 			output : list
 				a list with the linear combination formula for each node of the layer
-        """
+		"""
 		
 		# Loop to compute the linear combination
 		output = []    
@@ -213,19 +213,19 @@ class MILP:
 	def _z3_to_string( self, variable ):
 
 		"""
-        Method that convert the z3 variable in a string, useful to obtain
+		Method that convert the z3 variable in a string, useful to obtain
 		arbitrary decimal precision.
 
-        Parameters
-        ----------
-            variable : z3.var
-                the variable to convert in string
+		Parameters
+		----------
+			variable : z3.var
+				the variable to convert in string
 
 		Returns:
 		--------
 			string : str
 				the string that represent the z3 variales with a rpecision of 20 decimals
-        """
+		"""
 		
 		#
 		return f"{variable:.20f}"
@@ -234,19 +234,19 @@ class MILP:
 	def _z3_real_to_float( self, variable ):
 
 		"""
-        Method that convert the z3 variable to a float, useful to obtain
+		Method that convert the z3 variable to a float, useful to obtain
 		the value before the return of the counterexample.
 
-        Parameters
-        ----------
-            variable : z3.var
-                the variable to convert in string
+		Parameters
+		----------
+			variable : z3.var
+				the variable to convert in string
 
 		Returns:
 		--------
 			val : float
 				the float that represent the z3 variales
-        """
+		"""
 
 		# Ask to the solver for the real value of interested variable
 		real = self.solver.model()[variable]
@@ -262,19 +262,19 @@ class MILP:
 	def _is_relu( self, layer ):
 
 		"""
-        Method that return TRUE if the requested layer is ReLU, 
+		Method that return TRUE if the requested layer is ReLU, 
 		and FALSE if linear.
 
-        Parameters
-        ----------
-            layer : int
-                index of the interested layer
+		Parameters
+		----------
+			layer : int
+				index of the interested layer
 
 		Returns:
 		--------
 			is_relu : bool
 				true if the ReLu, false otherwise
-        """
+		"""
 
 		#
 		return self.network.layers[layer+1].activation == tf.keras.activations.relu
@@ -283,14 +283,14 @@ class MILP:
 	def _print_readable_variables( self, only_output=False ):
 
 		"""
-        Debug function to print all the variable in a human-readable form.
+		Debug function to print all the variable in a human-readable form.
 
-        Parameters
-        ----------
-            only_output : bool
-                flag variable, if true the method only print the output variables, 
+		Parameters
+		----------
+			only_output : bool
+				flag variable, if true the method only print the output variables, 
 				hiding the inner variables (default: False)
-        """
+		"""
 		
 		if only_output: 
 			flatten_vars = list(self.output_variables) 

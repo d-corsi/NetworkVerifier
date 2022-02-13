@@ -36,16 +36,16 @@ class CompleteProVe( ProVe ):
 	def __init__(self, network, P, dual_network, **kwargs):
 
 		"""
-        Constructor of the class, also calls the super class constructor ProVe
+		Constructor of the class, also calls the super class constructor ProVe
 
-        Parameters
-        ----------
+		Parameters
+		----------
 			network : tf.keras.Model
 				tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
-            P : list
+			P : list
 				input domain for the property in the form 'positive', each output from a point in this domain must be greater than zero.
 				2-dim list: a list of two element (lower_bound, upper_bound) for each input nodes
-        """
+		"""
 
 		super().__init__(network, P, **kwargs)
 		self.dual_network = dual_network
@@ -54,13 +54,13 @@ class CompleteProVe( ProVe ):
 	def verify( self, verbose ):
 
 		"""
-        Method that perform the formal analysis. When the solver explored and verify all the input domain it returns the
+		Method that perform the formal analysis. When the solver explored and verify all the input domain it returns the
 		violation rate, when the violation rate is zero we colcude the the proeprty is fully respected, i.e., SAT
 
-        Parameters
-        ----------
-            verbose : int
-                when verbose > 0 the software print some log informations
+		Parameters
+		----------
+			verbose : int
+				when verbose > 0 the software print some log informations
 
 		Returns:
 		--------
@@ -71,7 +71,7 @@ class CompleteProVe( ProVe ):
 				key 'counter_example' returns the input configuration that cause a violation
 				key 'exit_code' returns the termination reason (timeout or completed)
 				key 'violation_rate' returns the value of the vilation rate as a percentage of the input domain
-        """
+		"""
 
 		# Flatten the input domain to aobtain the areas matrix to simplify the splitting
 		areas_matrix = np.array([self.P.flatten()])
@@ -137,15 +137,15 @@ class CompleteProVe( ProVe ):
 	def _complete_verifier( self, test_bound, test_bound_dual ):
 		
 		"""
-        Method that verify the property on a list of the computed (or sampled in semi-formal mode) output bound.
+		Method that verify the property on a list of the computed (or sampled in semi-formal mode) output bound.
 
-        Parameters
-        ----------
-            test_bound : list
-                the output bound expressed as a 3-dim matrix. (a) a list of list for each splitted domain;
+		Parameters
+		----------
+			test_bound : list
+				the output bound expressed as a 3-dim matrix. (a) a list of list for each splitted domain;
 				(b) a list of bound for each input node and (c) a list of two element for the node, lower and upper
 			test_bound_dual : list
-                same as test_bound but for the dual network
+				same as test_bound but for the dual network
 
 		Returns:
 		--------
@@ -156,7 +156,7 @@ class CompleteProVe( ProVe ):
 				list of integer with the index of the bound that violated the give property
 			proved_id : list
 				list of integer with the index of the bound that respect the give property
-        """
+		"""
 
 		# Check the property in standard and reverse mode for both a violation and a proof. 
 		# To prove the property, in the first case every bound must be greater than zero,

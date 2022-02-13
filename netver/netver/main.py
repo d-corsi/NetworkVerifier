@@ -50,20 +50,20 @@ class NetVer:
 	def __init__( self, algo, network, property, **kwargs ):
 
 		"""
-        Constructor of the class. This method builds the object verifier, setting all the parameters and parsing the proeprty 
+		Constructor of the class. This method builds the object verifier, setting all the parameters and parsing the proeprty 
 		and the network to the correct format for the tool. 
 
-        Parameters
-        ----------
+		Parameters
+		----------
 			algo : string
 				a string that indicates the algorith/tool to use, a list of all the available keys here https://github.com/d-corsi/NetworkVerifier
-            property : dict
+			property : dict
 				a dictionary that describe the property to analyze, overview of the structure here https://github.com/d-corsi/NetworkVerifier
 			network : tf.keras.Model
 				neural network model to analyze
 			kwargs : **kwargs
 				dictionary to overide all the non-necessary paramters (if not specified the algorithm will use the default values)	
-        """
+		"""
 
 		if property["type"] == "positive":
 			self.primal_network = network
@@ -90,12 +90,12 @@ class NetVer:
 	def run_verifier( self, verbose=0 ):
 
 		"""
-        Method that perform the formal analysis, launching the object verifier setted in the constructor.
+		Method that perform the formal analysis, launching the object verifier setted in the constructor.
 
-        Parameters
-        ----------
-            verbose : int
-                when verbose > 0 the software print some log informations
+		Parameters
+		----------
+			verbose : int
+				when verbose > 0 the software print some log informations
 
 		Returns:
 		--------
@@ -105,7 +105,7 @@ class NetVer:
 				a dictionary that contains different information on the process, the 
 				key 'counter_example' returns the input configuration that cause a violation
 				key 'exit_code' returns the termination reason (timeout or completed)
-        """
+		"""
 		
 		#
 		return self.verifier.verify( verbose )
@@ -114,23 +114,23 @@ class NetVer:
 	def _create_net_decision( self, network, property ):
 
 		"""
-        This method modify the network using the given network and the decision property (i.e., the pivot node can not be the one with the highest value), 
+		This method modify the network using the given network and the decision property (i.e., the pivot node can not be the one with the highest value), 
 		to create a network ehich is verifiable with a 'reverse positive' query (i.e., at least one output of the network must be greater than 0). 
 		To this end, the method adds n-1 nodes to the netwrok, each of which is the results of itself - the pivot node.
 		If one of the other output is greater than the pivot node the 'reverse positive' query is succesfully proved.
 
-        Parameters
-        ----------
+		Parameters
+		----------
 			network : tf.keras.Model
 				tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
-            property : dict
+			property : dict
 				a dictionary that describe the 'decision' property to analyze (overview of the structure here https://github.com/d-corsi/NetworkVerifier)	
 
 		Returns:
 		--------
 			network_custom : tf.keras.Model
 				the netowrk model modified for the 'reverse positive' query
-        """
+		"""
 
 		# Get the size of the output layer and the pivot node
 		output_size = network.output.shape[1]
@@ -165,23 +165,23 @@ class NetVer:
 	def _create_net_PQ( self, network, property ):
 
 		"""
-        This method modify the netowrk netowrk using the given network and the PQ property (i.e., each output must be inside the corresponding bound given by the property Q), 
+		This method modify the netowrk netowrk using the given network and the PQ property (i.e., each output must be inside the corresponding bound given by the property Q), 
 		to create a netowrk that is verifiable with a 'positive' query (i.e., at least one output of the network must be greater than 0). 
 		To this end, the method adds 2n nodes to the netwrok, each of which is the results of node +/- is upper and lower bound.
 		If each node is inside its bound the 'positive' query is succesfully proved.
 
-        Parameters
-        ----------
+		Parameters
+		----------
 			network : tf.keras.Model
 				tensorflow model to analyze, the model must be formatted in the 'tf.keras.Model(inputs, outputs)' format
-            property : dict
+			property : dict
 				a dictionary that describe the 'PQ' property to analyze (overview of the structure here https://github.com/d-corsi/NetworkVerifier)	
 
 		Returns:
 		--------
 			network_custom : tf.keras.Model
 				the netowrk model modified for the 'reverse positive' query
-        """
+		"""
 
 		# Get the size of the output layer and the pivot node
 		output_size = len(property["Q"])
@@ -213,14 +213,14 @@ class NetVer:
 	def _sanity_check( self, algo, network, property ):
 
 		"""
-        Constructor of the class. This method builds the object verifier, setting all the parameters and parsing the proeprty 
+		Constructor of the class. This method builds the object verifier, setting all the parameters and parsing the proeprty 
 		and the network to the correct format for the tool. 
 
-        Parameters
-        ----------
+		Parameters
+		----------
 			algo : string
 				a string that indicates the algorith/tool to use, a list of all the available keys here https://github.com/d-corsi/NetworkVerifier
-            property : dict
+			property : dict
 				a dictionary that describe the property to analyze, overview of the structure here https://github.com/d-corsi/NetworkVerifier
 			network : tf.keras.Model
 				neural network model to analyze
@@ -229,7 +229,7 @@ class NetVer:
 		--------
 			sanity_check : bool
 				return True if the sanity check did not find any errors, False otherwise
-        """
+		"""
 
 		# TODO: check the network structure and the activations [relu, sigmoid, tanh, linear]
 		# TODO: check thah the property Q and P comes with the same size of the network (assert model.output.shape[1] == len(property["Q"]))
