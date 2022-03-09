@@ -83,6 +83,9 @@ class NetVer:
 		else:
 			raise ValueError("Invalid property type, valid values: [positive, PQ, decision]")
 
+		# Check mismatch between size of the input layer and domain P of the property
+		assert( self.primal_network.input.shape[1] == len(property["P"]) )
+
 		# Creation of the object verifier, calling the selected algorithm class with the required parameters
 		self.verifier = self.algorithms_dictionary[algo]( self.primal_network, np.array(property["P"]), **kwargs )
 

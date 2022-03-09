@@ -1,4 +1,3 @@
-import imp
 import numpy as np; import tensorflow as tf
 
 
@@ -26,8 +25,8 @@ def multi_area_estimator( input_domain, net_model, estimation_precision=100 ):
 	"""
 
 	# Sampling the point cloud from the input domain and reshaped according to the tensorflow format
-	domains = [np.random.uniform(input_area[:, 0], input_area[:, 1], (estimation_precision, 2) ) for input_area in input_domain]
-	network_input = np.array(domains).reshape( estimation_precision*input_domain.shape[0], -1 )
+	domains = np.array([np.random.uniform(input_area[:, 0], input_area[:, 1], size=(estimation_precision, input_domain.shape[1])) for input_area in input_domain])
+	network_input = domains.reshape( estimation_precision*input_domain.shape[0], -1 )
 
 	# Propagation of the input through the network
 	network_output = net_model(network_input).numpy().reshape( input_domain.shape[0], estimation_precision, -1 )
