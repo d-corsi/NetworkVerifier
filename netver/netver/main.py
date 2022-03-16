@@ -3,11 +3,12 @@ from netver.backend.ProVe import ProVe
 from netver.backend.CompelteProve import CompleteProVe
 from netver.backend.MILP import MILP
 from netver.backend.LinearSolver import LinearSolver
+from netver.backend.Estimated import Estimated
 from netver.utils.dual_net_gen import *
 import tensorflow as tf; import numpy as np
 
 # TODO: implements the sanity check method
-# TODO: add support for other neural network format for the translation
+# TODO: add support for other neural network format
 
 class NetVer:
 
@@ -43,7 +44,8 @@ class NetVer:
 		"prove" : ProVe,
 		"complete_prove" : CompleteProVe,
 		"MILP" : MILP,
-		"linear" : LinearSolver
+		"linear" : LinearSolver,
+		"estimated" : Estimated
 	}
 
 

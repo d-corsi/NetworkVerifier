@@ -13,6 +13,7 @@ A set of algorithms for the formal verification and analysis of Neural Networks,
 - [x] ProVe [8]
 - [ ] α,β-CROWN [9]
 - [x] Complete ProVe [10]
+- [x] Estimated [10]
 
 *NB: given the limitations of the original algorithms, [1, 2, 3, 4, 5, 7] are compatible only with piecewise activation functions (e.g., linear, ReLU) while [6, 8, 9, 10] work with all monotonically increasing function (e.g., linear, ReLU, tanh, sigmoid). For [2, 3, 4] we only implement the basic version of the algorithm, please look at the original paper for all the optimizations.*
 
@@ -92,6 +93,7 @@ MILP #[1]
 linear #[2, 3, 4]
 prove #[8]
 complete_prove #[10]
+estimated #[10]
 ```
 
 
@@ -106,11 +108,14 @@ Follow a list of the available parameters (with the default value):
 # Common to all the algorithms
 time_out_cycle = 35 #timeout on the number of cycle
 time_out_checked = 0 #timeout on the checked area, if the unproved area is less than this value the algorithm stop returning the residual as a violation
-rounding = None #rounding value for the input domain (P))
+rounding = None #rounding value for the input domain (P)
 
 # Only for ProVe
 semi_formal_precision = 100 #number of samples for the semi formal analysis for each sub interval of the input domain (P)
 semi_formal = False #enable the semi-formal verification
+
+# Only for Estimated
+cloud_size = 10000 #indicates the size of the point cloud for the method
 ```
 
 
@@ -118,7 +123,7 @@ semi_formal = False #enable the semi-formal verification
 The analysis returns two values SAT and info. *SAT* is true if the property is respected, false otherwise; *value* is a dictionary that contains different values, based on the used algorithm:
 
 - counter_example: a counter example that falsify the property 
-- violation_rate: the violation rate of the property *(only for Complete Prove - complete_prove)*
+- violation_rate: the violation rate of the property *(only for Complete Prove - complete_prove and Estimated - estimated)*
 - exit_reason: reason for an anticipate exit *(usually timeout)*
 
 
@@ -149,6 +154,8 @@ if __name__ == "__main__":
 	}
 
 	netver = NetVer( "complete_prove", model, property, semi_formal=True )
+	# or 
+	# netver = NetVer( "estimated", model, property, cloud_size=10000 )
 
 	sat, info = netver.run_verifier( verbose=1 )
 	print( f"\nThe property is SAT? {sat}" )
