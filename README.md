@@ -4,18 +4,23 @@ This is a **work in progress repo**, there may be bugs in the code and numerous 
 # Network Verifier
 A set of algorithms for the formal verification and analysis of Neural Networks, implemented in Python for TensorFlow 2. This repo replace the original repo of ProVe (UAI'21), you can find the original repo [here!](https://github.com/d-corsi/ProVe)
 
-## Available Algorithms
-- [x] MILP [1]
-- [x] Linear Programming Based [2, 3, 4] 
-- [ ] Reluplex [5]
-- [ ] Reluval [6]
-- [ ] Marabou [7]
+## Available Algorithms: ProVe Family 
 - [x] ProVe [8]
-- [ ] α,β-CROWN [9]
 - [x] Complete ProVe [10]
-- [x] Estimated [10]
+- [ ] Sampling ProVe [10]
 
-*NB: given the limitations of the original algorithms, [1, 2, 3, 4, 5, 7] are compatible only with piecewise activation functions (e.g., linear, ReLU) while [6, 8, 9, 10] work with all monotonically increasing function (e.g., linear, ReLU, tanh, sigmoid). For [2, 3, 4] we only implement the basic version of the algorithm, please look at the original paper for all the optimizations.*
+### Available Algorithms: Educational Purposes
+- [x] MILP [1]
+- [x] Linear Programming [2, 3, 4] 
+
+### Other Popular Verfiers
+- Reluplex [5]
+- Reluval [6]
+- Marabou [7]
+- α,β-CROWN [9]
+- Estimated [10]
+
+*NB: given the limitations of the original algorithms, [1, 2, 3, 4, 5, 7] are compatible only with piecewise activation functions (e.g., linear, ReLU) while [6, 8, 9, 10] work with all monotonically increasing function (e.g., linear, ReLU, tanh, sigmoid). For [2, 3, 4] we implemented the basic version of the algorithm, only for educational purposes, please look at the original paper for all the optimizations.*
 
 ## Installation
 
@@ -163,8 +168,9 @@ if __name__ == "__main__":
 ```
 
 
-## Author
+## Authors
 * **Davide Corsi** - davide.corsi@univr.it
+* **Luca Marzari** - luca.marzari@univr.it
 
 
 ## References
@@ -177,7 +183,7 @@ if __name__ == "__main__":
 - [7] Katz et al., The Marabou Framework for Verification and Analysis of Deep Neural Networks, *International Conference on Computer Aided Verification*, 2019
 - [8] Corsi et al., Formal Verification of Neural Networks for Safety-Critical Tasks in Deep Reinforcement Learning, *Conference on Uncertainty in Artificial Intelligence*, 2021
 - [9] Wang et al., Efficient Bound Propagation with per-neuron Split Constraints for Complete and Incomplete Neural Network Verification, *Advances in Neural Information Processing Systems*, 2021
-- [10] *coming soon...*
+- [10] Marzari, Corsi et al. *coming soon...*
 
 
 ## License
