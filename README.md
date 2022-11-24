@@ -59,7 +59,7 @@ Following the definition of α,β-CROWN [Wang et al.], given an input property P
 ```
 property = {
 	"type" : "positive",
-	"P" : [[0.1, 0.], [0.7, 1.1]]
+	"P" : [[0.1, 0.3], [0.7, 1.1]]
 }
 ```
 
