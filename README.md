@@ -18,7 +18,6 @@ A set of algorithms for the formal verification and analysis of Neural Networks,
 - Reluval [6]
 - Marabou [7]
 - α,β-CROWN [9]
-- Estimated [10]
 
 *NB: given the limitations of the original algorithms, [1, 2, 3, 4, 5, 7] are compatible only with piecewise activation functions (e.g., linear, ReLU) while [6, 8, 9, 10] work with all monotonically increasing function (e.g., linear, ReLU, tanh, sigmoid). For [2, 3, 4] we implemented the basic version of the algorithm, only for educational purposes, please look at the original paper for all the optimizations.*
 
