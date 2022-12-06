@@ -13,7 +13,7 @@ A set of algorithms for the formal verification and analysis of Neural Networks,
 - [x] MILP [1]
 - [x] Linear Programming [2, 3, 4] 
 
-### Other Popular Verfiers
+### External Popular Verfiers
 - Reluplex [5]
 - Reluval [6]
 - Marabou [7]
