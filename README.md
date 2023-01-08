@@ -35,7 +35,7 @@ Properties can be defined with 3 different formulations:
 
 ### PQ
 Following the definition of Marabou [Katz et al.], given an input property P and an output property Q, the property is verified if for each *x* in P it follows that N(x) is in Q *(i.e., if the input belongs to the interval P, the output must belongs to the interval Q)*.
-```
+```python
 property = {
 	"type" : "PQ",
 	"P" : [[0.1, 0.34531], [0.7, 1.1]],
@@ -45,7 +45,7 @@ property = {
 
 ### Decision
 Following the definition of ProVe [Corsi et al.], given an input property P and an output node A corresponding to an action, the property is verified if for each *x* in P it follows that the action A will never be selected *(i.e., if the input belongs to the interval P, the output of node A is never the one with the highest value)*.
-```
+```python
 property = {
 	"type" : "decision",
 	"P" : [[0.1, 0.3], [0.7, 1.1]],
@@ -55,7 +55,7 @@ property = {
 
 ### Positive
 Following the definition of α,β-CROWN [Wang et al.], given an input property P the output of the network is non negative *(i.e., if the input belongs to the interval P, the output of each node is greater or equals zero)*
-```
+```python
 property = {
 	"type" : "positive",
 	"P" : [[0.1, 0.3], [0.7, 1.1]]
@@ -71,7 +71,7 @@ property = {
 - [ ] ONNX  
 
 *example of compatible TF2 model...*
-```
+```python
 inputs = tf.keras.layers.Input(shape=(2,))
 hidden_0 = tf.keras.layers.Dense(32, activation='relu', bias_initializer='random_normal')(inputs)
 hidden_1 = tf.keras.layers.Dense(32, activation='relu', bias_initializer='random_normal')(hidden_0)
@@ -83,7 +83,7 @@ return tf.keras.Model(inputs, outputs)
 
 ## Run the Algorithm
 To use our algorithms use the class **NetVer** from the python file *netver/main.py*. 
-```
+```python
 algorithm_key = "prove" # for ProVe [8]
 
 from netver.main import NetVer
@@ -103,12 +103,12 @@ estimated #[10]
 
 ## Parameters
 NetVer will use the default parameters for the formal analysis. You can change all the parameter when create the NetVer object as follow: 
-```
+```python
 from netver.main import NetVer
 netver = NetVer( algorithm_key, model, semi_formal=True, rounding=3 )
 ```
 Follow a list of the available parameters (with the default value):
-```
+```python
 # Common to all the algorithms
 time_out_cycle = 35 #timeout on the number of cycle
 time_out_checked = 0 #timeout on the checked area, if the unproved area is less than this value the algorithm stop returning the residual as a violation
@@ -133,7 +133,7 @@ The analysis returns two values SAT and info. *SAT* is true if the property is r
 
 ## Example Code
 To run the example code, use *example.py* from the main folder:
-```
+```python
 import tensorflow as tf
 import numpy as np
 from netver.main import NetVer
