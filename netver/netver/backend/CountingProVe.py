@@ -1,8 +1,10 @@
 import numpy as np;
-import tqdm
+from tqdm import tqdm
 import operator
 import math
-from netver.main import NetVer
+import warnings; warnings.filterwarnings("ignore")
+import os; os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+#from netver.main import NetVer
 from functools import reduce
 
 class CountingProVe(  ):
@@ -35,7 +37,7 @@ class CountingProVe(  ):
 	estimated_true_count = False
 	time_out_cycle = 40
 	time_out_checked = 0.0
-	rounding = 8
+	rounding = 4
 	reversed = False
 	
 	# Hyperparameters for confidence at 99%, i.e., β*t=7 and the number of samples to compute the median 
@@ -76,13 +78,11 @@ class CountingProVe(  ):
 		# set how many preliminary splits are necessary
 		discretization = self.rounding
 		r = (1/10**(discretization))
-		total_area_points = reduce(operator.mul,[ int(np.round(((el[1]-el[0])/r))+1) for el in self.P["P"]])
+		total_area_points = reduce(operator.mul,[ int(np.round(((el[1]-el[0])/r))+1) for el in self.area])
 		self.S = int(math.log(total_area_points))
-		print(f'Hyperparameters: [S = {self.S - 1}, β = {self.beta}, T = {self.T}, m = {self.m}, confidence = {round((1 - 2 ** (-self.beta*(self.T)))*100, 2)}%]\n')
 
-		# Private variables
-		self.unchecked_area = 100
-		self._split_matrix = self._generate_splitmatrix()
+		print(f'\n\tHyperparameters: [S = {self.S - 1}, β = {self.beta}, T = {self.T}, m = {self.m}, confidence = {round((1 - 2 ** (-self.beta*(self.T)))*100, 2)}%]\n')
+
 
 
 	def verify( self, verbose ):
@@ -113,7 +113,10 @@ class CountingProVe(  ):
 
 		for _ in tqdm(range(self.T)):
 
+			self.area = np.array(self.P, dtype=np.float64).copy()
 			violation_t = self.count( self.beta, self.S )
+
+			self.area = np.array(self.P, dtype=np.float64).copy()
 			safe_t = self.count( self.beta, self.S, count_violation=False )
 
 			lower_violation_rate = min(lower_violation_rate, violation_t)
@@ -121,7 +124,7 @@ class CountingProVe(  ):
 
 		lower_bound = round(lower_violation_rate*100, 3)
 		upper_bound = round(lower_safe_rate*100, 3)
-		violation_rate = round((lower_bound + (100 - upper_bound))/2, 3)*100
+		violation_rate = round((lower_bound + (100 - upper_bound))/2, 3)
 
 
 		return (violation_rate == 0), { "lower_bound": lower_bound, "upper_bound": 100 - upper_bound, "size_interval_confidence_VR": (100 - upper_bound)-lower_bound, "violation_rate": violation_rate}
@@ -155,7 +158,7 @@ class CountingProVe(  ):
 			_, info = netver.run_verifier( verbose=0)
 			rate_split = (info['violation_rate'] / 100)
 			if not count_violation: rate_split = 1 - rate_split
-		
+
 		else:
 			#netver = NetVer( "estimated", self.network, prp, cloud_size=1000000 )
 			rate_split, _, _ = self._get_sampled_violation(  input_area=self.area, cloud_size=1000000, violation=count_violation )

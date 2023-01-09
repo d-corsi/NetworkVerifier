@@ -1,6 +1,7 @@
 import os; 
 from netver.backend.ProVe import ProVe
 from netver.backend.CompelteProve import CompleteProVe
+from netver.backend.CountingProVe import CountingProVe
 from netver.backend.MILP import MILP
 from netver.backend.LinearSolver import LinearSolver
 from netver.backend.Estimated import Estimated
@@ -43,6 +44,7 @@ class NetVer:
 	algorithms_dictionary = {
 		"prove" : ProVe,
 		"complete_prove" : CompleteProVe,
+		"counting_prove": CountingProVe,
 		"MILP" : MILP,
 		"linear" : LinearSolver,
 		"estimated" : Estimated
