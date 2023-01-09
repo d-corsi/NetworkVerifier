@@ -7,7 +7,7 @@ A set of algorithms for the formal verification and analysis of Neural Networks,
 ## Available Algorithms: ProVe Family 
 - [x] ProVe [8]
 - [x] Complete ProVe [10]
-- [ ] Sampling ProVe [10]
+- [ ] CountingProVe [10]
 
 ### Available Algorithms: Educational Purposes
 - [x] MILP [1]
