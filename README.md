@@ -7,7 +7,7 @@ A set of algorithms for the formal verification and analysis of Neural Networks,
 ## Available Algorithms: ProVe Family 
 - [x] ProVe [8]
 - [x] Complete ProVe [10]
-- [ ] CountingProVe [10]
+- [x] CountingProVe [10]
 
 ### Available Algorithms: Educational Purposes
 - [x] MILP [1]
@@ -120,6 +120,11 @@ semi_formal = False #enable the semi-formal verification
 
 # Only for Estimated
 cloud_size = 10000 #indicates the size of the point cloud for the method
+
+# Only for CountingProVe (we refer to [10] for details)
+beta = 0.02
+T = 350
+m = 1500000 
 ```
 
 

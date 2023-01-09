@@ -1,6 +1,6 @@
 import os; 
 from netver.backend.ProVe import ProVe
-from netver.backend.CompelteProve import CompleteProVe
+from netver.backend.CompleteProve import CompleteProVe
 from netver.backend.CountingProVe import CountingProVe
 from netver.backend.MILP import MILP
 from netver.backend.LinearSolver import LinearSolver
@@ -145,7 +145,7 @@ class NetVer:
 
 		# Create the custom last layer (linear activation) of n-1 nodes, 
 		# and create the fully connected new network with this last layer attached
-		output_custom = tf.keras.layers.Dense(output_size-1, activation='linear')(network.output)
+		output_custom = tf.keras.layers.Dense(output_size-1, activation='linear', name='output_custom')(network.output)
 		network_custom = tf.keras.Model( network.input, output_custom )
 
 		# Create the array for the biases and weights of the new fully connected layer to zero
@@ -195,7 +195,7 @@ class NetVer:
 
 		# Create the custom last layer (linear activation) of 2n nodes, 
 		# and create the fully connected new network with this last layer attached
-		output_custom = tf.keras.layers.Dense(output_size*2, activation='linear')(network.output)
+		output_custom = tf.keras.layers.Dense(output_size*2, activation='linear', name='output_custom')(network.output)
 		network_custom = tf.keras.Model( network.input, output_custom )
 
 		# Create the array for the biases and weights of the new fully connected layer

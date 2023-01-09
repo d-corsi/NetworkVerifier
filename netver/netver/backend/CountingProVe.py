@@ -4,8 +4,8 @@ import operator
 import math
 import warnings; warnings.filterwarnings("ignore")
 import os; os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-#from netver.main import NetVer
 from functools import reduce
+from netver.backend.CompleteProve import CompleteProVe
 
 class CountingProVe(  ):
 
@@ -44,8 +44,6 @@ class CountingProVe(  ):
 	beta = 0.02
 	T = 350
 	m = 1500000
-	
-
 
 
 	def __init__(self, network, P, dual_network, **kwargs):
@@ -68,6 +66,7 @@ class CountingProVe(  ):
 		self.area = np.array(self.P, dtype=np.float64).copy()
 		self.initial_area_size = self._compute_area_size()
 		self.dual_network = dual_network
+		self.kwargs = kwargs
 
 
 		# Override the default parameters
@@ -153,14 +152,13 @@ class CountingProVe(  ):
 
 		# Compute the violation rate of the current leaf with the formal method
 		if not self.estimated_true_count:
-			prp = { "type" : "positive", "P" : self.area }
-			netver = NetVer( "complete_prove", self.network, prp, rounding=self.rounding, time_out_checked=self.time_out_checked )
-			_, info = netver.run_verifier( verbose=0)
+			#prp = { "type" : "positive", "P" : self.area }
+			netver = CompleteProVe( self.network, self.area, self.dual_network, **self.kwargs )
+			_, info = netver.verify( verbose=0 )
 			rate_split = (info['violation_rate'] / 100)
 			if not count_violation: rate_split = 1 - rate_split
 
 		else:
-			#netver = NetVer( "estimated", self.network, prp, cloud_size=1000000 )
 			rate_split, _, _ = self._get_sampled_violation(  input_area=self.area, cloud_size=1000000, violation=count_violation )
 
 	
@@ -208,11 +206,17 @@ class CountingProVe(  ):
 	def _get_rate(self, model, network_input, violation):
 		
 		model_prediction = model(network_input).numpy()
+		maxis = np.amax(model_prediction, axis=1)
+		mins = np.amin(model_prediction, axis=1)
 
-		if violation:
-			where_indexes = np.where([model_prediction < 0])[1]
+		# Decision: a property is violated if the 
+		if not self.reversed:
+			if violation: where_indexes = np.where( [mins < 0] )[1]
+			else: where_indexes = np.where( [mins >= 0] )[1]
+
 		else:
-			where_indexes = np.where([model_prediction >= 0])[1]
+			if violation: where_indexes = np.where( [maxis <= 0] )[1]
+			else: where_indexes = np.where( [maxis > 0] )[1]	
 
 		input_conf = network_input[where_indexes]
 
