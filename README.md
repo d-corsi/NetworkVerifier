@@ -1,6 +1,3 @@
-### Disclaimer:
-This is a **work in progress repo**, there may be bugs in the code and numerous typos in the README file. The documentation for the methods and the class structure is a work in progress. For numerous classes the code will be refactored.
-
 # Network Verifier
 A set of algorithms for the formal verification and analysis of Neural Networks, implemented in Python for TensorFlow 2. This repo replace the original repo of ProVe (UAI'21), you can find the original repo [here!](https://github.com/d-corsi/ProVe)
 
